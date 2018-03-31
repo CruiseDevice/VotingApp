@@ -3,4 +3,14 @@
 {% endblock %}
 {% block content %}
     
+    {% if latest_question_list %}
+        <ul>
+            {% for question in latest_question_list %}
+                <li><a href="{% url 'app:detail' question.id  %}">
+                    {{question.question_text}}
+                </a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <p>No polls are available</p>
 {% endblock %}
