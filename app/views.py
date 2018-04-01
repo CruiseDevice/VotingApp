@@ -13,7 +13,7 @@ from .models import Question, Choice
 @python_2_unicode_compatible
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    print(latest_question_list)
+    # print(latest_question_list)
     return render(request,'app/list.html',{'latest_question_list':latest_question_list})
 
 @python_2_unicode_compatible
@@ -38,10 +38,13 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice."
         })
     else:
-        selected_choice += 1
+        selected_choice.votes = selected_choice.votes + 1
         selected_choice.save()
-    return HttpResponseRedirect(reverse('app:results', args=(question.id)))
+    return HttpResponseRedirect(reverse('app:results', args=(question.id,)))
 
 @python_2_unicode_compatible
-def results(request):
-    return render(request, 'app/results.html',{})
+def results(request,question_id):
+    question = get_object_or_404(Question, id = question_id)
+    return render(request, 'app/results.html',{
+        'question':question
+    })
