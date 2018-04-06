@@ -1,8 +1,11 @@
+{% extends "base.html" %}
 {% block title %}
 
 {% endblock %}
 {% block content %}
-    
+    <h1>Django-voting</h1>
+    <h3>Below are polls hosted by Django-voting</h3>
+    <h3>Select a poll to see the results and vote, <a href="{% url 'app:new_poll' %}">or make a new poll!</a></h3>
     {% if latest_question_list %}
         <ul>
             {% for question in latest_question_list %}
@@ -11,6 +14,7 @@
                 </a></li>
             {% endfor %}
         </ul>
+    {% else %}
+        <p>No polls are available</p>
     {% endif %}
-    <p>No polls are available</p>
 {% endblock %}
