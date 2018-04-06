@@ -25,6 +25,20 @@ urlpatterns = [
         r'^(?P<question_id>[0-9]+)/results/$',
         views.results,
         name='results'
+    ),
+    url(
+        r'^new/$',
+        views.new_poll,
+        name='new_poll'
+    ),
+    url(
+        r'^new/addNewQuestion',
+        views.addNewQuestion,
+        name='addNewQuestion'
+    ),
+    url(
+        r'^new/addNewChoice',
+        views.addNewChoice,
+        name='addNewChoice',
     )
-
 ]
