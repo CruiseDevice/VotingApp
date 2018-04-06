@@ -4,9 +4,11 @@ from __future__ import unicode_literals
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.utils.encoding import python_2_unicode_compatible
 from django.shortcuts import render,get_list_or_404, \
-                        get_object_or_404
+                        get_object_or_404, redirect
 from django.urls import reverse
+from django.utils import  timezone
 
+from .forms import ChoiceForm, QuestionForm
 
 from .models import Question, Choice
 
@@ -24,7 +26,7 @@ def detail(request, question_id):
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request,'app/detail.html',{
-        'question':question
+        'question':question 
     })
 
 @python_2_unicode_compatible
@@ -47,4 +49,42 @@ def results(request,question_id):
     question = get_object_or_404(Question, id = question_id)
     return render(request, 'app/results.html',{
         'question':question
+    })
+
+@python_2_unicode_compatible
+def new_poll(request):
+    return render(request,'app/new_poll.html',{})
+
+@python_2_unicode_compatible
+def addNewQuestion(request):
+    print("addnewquestion")
+    if request.method == "POST":
+        print("inside if inside addnewquestion")
+        form = QuestionForm(request.POST)
+        print(form)
+        if form.is_valid():
+            print(form.is_valid())
+            post = form.save()
+            post.pub_date = timezone.now()
+            post.save()
+            print(post)
+            return redirect('app:new_poll')
+    else:
+        form=QuestionForm()
+    return render(request,'app/newQuestion.html',{
+        'form':form
+    })
+
+@python_2_unicode_compatible
+def addNewChoice(request):
+    if request.method == "POST":
+        form = ChoiceForm(request.POST)
+        if form.is_valid():
+            post = form.save()
+            post.save()
+            return redirect('app:new_poll')
+    else:
+        form = ChoiceForm()
+    return render(request,'app/newChoice.html',{
+        'form':form
     })
