@@ -1,13 +1,51 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block title %}
 
 {% endblock %}
 {% block content %}
-    <h1>{{question.question_text}}</h1>
-    <ul>
-        {% for choice in question.choice_set.all %}
-            <li>{{choice.choice_text}} -- {{choice.votes}} vote{{choice.votes|pluralize}}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'app:detail' question.id %}">Vote again?</a>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js" type="text/javascript"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+    <div class = "row">
+        <div class = "col-md-5">
+            <p hidden id = "votes">{{choice.votes}}</p>
+            <h1>{{question.question_text}}</h1>
+            <ul>
+                {% for choice in question.choice_set.all %}
+                    <li id = "votes">{{choice.choice_text}} -- {{choice.votes}} vote{{choice.votes|pluralize}}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'app:detail' question.id %}">Vote again?</a>
+        </div>
+        <div class = "col-md-5 col-md-offset-2">
+            <canvas id = "chart" width="500" height="300"></canvas>
+                <script>
+                        $(document).ready(function(){
+                        var votes = $("#votes").text();
+                        var data = {
+                            labels:[
+                                {% for choice in question.choice_set.all %}
+                                    "{{choice.choice_text}}",
+                                {% endfor %}
+                            ],
+                            datasets:[
+                                {
+                                    data:[{% for choice in question.choice_set.all %} "{{choice.votes}}", {% endfor %}],
+                                    backgroundColor:[{% for color in colors %}"{{color}}",{% endfor %}]
+                                }
+                            ]
+                        };
+                        console.log(votes);
+                        var ctx = document.getElementById("chart").getContext("2d");
+                        var doughnutChart = new Chart(ctx,{
+                            type:'doughnut',
+                            data:data
+                        }); 
+                    });
+                </script>
+            
+        </div>
+        
+    </div>
+    
 {% endblock %}

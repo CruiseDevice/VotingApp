@@ -47,8 +47,10 @@ def vote(request, question_id):
 @python_2_unicode_compatible
 def results(request,question_id):
     question = get_object_or_404(Question, id = question_id)
+    colors = ['Yellow','Brown','Red','Green','Blue']
     return render(request, 'app/results.html',{
-        'question':question
+        'question':question,
+        'colors':colors
     })
 
 @python_2_unicode_compatible
