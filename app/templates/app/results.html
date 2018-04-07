@@ -24,6 +24,7 @@
                         var votes = $("#votes").text();
                         var data = {
                             labels:[
+                                // got this from https://stackoverflow.com/a/43706426
                                 {% for choice in question.choice_set.all %}
                                     "{{choice.choice_text}}",
                                 {% endfor %}
