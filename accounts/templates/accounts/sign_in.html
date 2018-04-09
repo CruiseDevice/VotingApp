@@ -11,9 +11,9 @@
     <div class = "row">
         <div class = "span6 columns">
             <form method = "POST">
-                <div class = "alert-message block-message erro">
+                {% csrf_token %}    
+                <div class = "alert-message block-message error">
                     {% if form.is_bound and not form.is_valid %}
-                    {% csrf_token %}
                     <div class = "errors">
                         {% for field in form.visible_fieldss %}
                             {% for error in field.errors %}
@@ -24,18 +24,19 @@
                             <p>{{error}}</p>
                         {% endfor %}
                     </div>
-                </div>
-                {% endif %}
-                {% for field in form %}
-                    <div class = "clearfix">
-                        {{field.label_tag}}
-                        <div class = "input">
-                            {{field}}
+                    {% endif %}
+                    {% for field in form %}
+                        <div class = "clearfix">
+                            {{field.label_tag}}
+                            <div class = "input">
+                                {{field}}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
                 <input type="submit" class = "btn primary" name="commit" id="" value = "Sign in">
+                </div>
             </form>
+                
         </div>
     </div>
 {% endblock %}

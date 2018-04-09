@@ -16,15 +16,20 @@
         <li class="nav-item">
           <a class="nav-link disabled" href="{% url 'app:new_poll'%}">New Poll</a>
         </li>
+        {% if user.authenticated %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{request.user}}
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item btn btn-success" href="#">Sign Out</a>
-
-          </div>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{user.name}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item btn btn-success" href="{% url 'accounts:sign_out' %}">Sign Out</a>
+            </div>
+          </li>
+        {% else %}
+        <li class = "nav-item">
+            <a class = "nav-link disabled" href="{% url 'accounts:sign_in' %}">Sign in</a>
         </li>
+        {% endif %}
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
