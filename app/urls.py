@@ -40,5 +40,20 @@ urlpatterns = [
         r'^new/addNewChoice',
         views.addNewChoice,
         name='addNewChoice',
+    ),
+    url(
+        r'^github_redirect',
+        views.github_redirect,
+        name='github_redirect',
+    ),
+    url(
+        r'twitter_redirect',
+        views.twitter_redirect,
+        name='twitter_redirect'
+    ),
+    url(
+        r'fcc_redirect',
+        views.fcc_redirect,
+        name='fcc_redirect'
     )
 ]

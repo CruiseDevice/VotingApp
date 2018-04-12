@@ -90,3 +90,12 @@ def addNewChoice(request):
     return render(request,'app/newChoice.html',{
         'form':form
     })
+
+def github_redirect(request):
+    return redirect("https://github.com/CruiseDevice")
+
+def twitter_redirect(request):
+    return redirect("https://twitter.com/CruiseDevice")
+
+def fcc_redirect(request):
+    return redirect("https://www.freecodecamp.org/challenges/build-a-voting-app")
