@@ -9,14 +9,16 @@
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'app:index' %}">Home <span class="sr-only">(current)</span></a>
         </li>
+        
+        {% if user.authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="#">My Polls</a>
+          <a class="nav-link" href="{% url 'app:my_polls' %}">My Polls</a>
         </li>
         
         <li class="nav-item">
           <a class="nav-link disabled" href="{% url 'app:new_poll'%}">New Poll</a>
         </li>
-        {% if user.authenticated %}
+        
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{user.name}}
