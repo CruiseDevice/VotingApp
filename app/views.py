@@ -99,3 +99,10 @@ def twitter_redirect(request):
 
 def fcc_redirect(request):
     return redirect("https://www.freecodecamp.org/challenges/build-a-voting-app")
+
+def my_polls(request,user):
+    logged_in_user = request.user
+    logged_in_user_polls = Question.objects.filter(user=user)
+    return render(request,'my_polls.html',{
+        'polls':logged_in_user_polls
+    })

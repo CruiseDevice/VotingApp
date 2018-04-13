@@ -47,13 +47,18 @@ urlpatterns = [
         name='github_redirect',
     ),
     url(
-        r'twitter_redirect',
+        r'^twitter_redirect',
         views.twitter_redirect,
         name='twitter_redirect'
     ),
     url(
-        r'fcc_redirect',
+        r'^fcc_redirect',
         views.fcc_redirect,
         name='fcc_redirect'
+    ),
+    url(
+        r'^my_polls',
+        views.my_polls,
+        name="my_polls"
     )
 ]
