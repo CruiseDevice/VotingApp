@@ -24,7 +24,7 @@ class Question(models.Model):
         self.save()
 
     def __str__(self):
-        return '{} by {}'.format(self.user, self.question_text)
+        return '{} by {}'.format(self.question_text, self.user)
 
 class Choice(models.Model):
     # pass

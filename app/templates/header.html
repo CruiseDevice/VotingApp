@@ -10,7 +10,7 @@
           <a class="nav-link" href="{% url 'app:index' %}">Home <span class="sr-only">(current)</span></a>
         </li>
         
-        {% if user.authenticated %}
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'app:my_polls' %}">My Polls</a>
         </li>
@@ -30,6 +30,11 @@
         {% else %}
         <li class = "nav-item">
             <a class = "nav-link disabled" href="{% url 'accounts:sign_in' %}">Sign in</a>
+        </li>
+        <li class = "nav-item">
+          <a href="{% url 'social:begin' 'github' %}" class = "btn btn-block btn-social btn-github">
+            <span class = "fa fa-github"></span>Login with GitHub
+          </a>
         </li>
         {% endif %}
       </ul>
