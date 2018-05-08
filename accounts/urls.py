@@ -12,7 +12,7 @@ urlpatterns = [
     ),
     url(
         r'sign_out',
-        auth_views.logout ,
+        auth_views.logout,
         name='sign_out'
     ),
     url(
