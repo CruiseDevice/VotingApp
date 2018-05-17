@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'accounts',
+    #'accounts',
     'social_django'
 ]
 
@@ -134,8 +134,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
-LOGIN_REDIRECT_URL = 'app/'
+LOGIN_REDIRECT_URL = '/'
 
 # GITHUB AUTHENTICATION
 SOCIAL_AUTH_GITHUB_KEY = credentials.SOCIAL_AUTH_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = credentials.SOCIAL_AUTH_GITHUB_SECRET
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
