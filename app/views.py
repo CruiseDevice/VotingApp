@@ -7,8 +7,12 @@ from django.shortcuts import render,get_list_or_404, \
                         get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import  timezone
+from django.contrib import messages
 
-from .forms import ChoiceForm, QuestionForm
+from .forms import (
+    ChoiceForm, QuestionForm, ChoiceInlineFormSet,
+    UserRegistrationForm
+)
 
 from .models import Question, Choice
 
@@ -59,22 +63,52 @@ def new_poll(request):
 
 @python_2_unicode_compatible
 def addNewQuestion(request):
-    print("addnewquestion")
+    # print("addnewquestion")
+    # if request.method == "POST":
+    #     print("inside if inside addnewquestion")
+    #     form = QuestionForm(request.POST)
+    #     print(form)
+    #     if form.is_valid():
+    #         print(form.is_valid())
+    #         post = form.save()
+    #         post.pub_date = timezone.now()
+    #         post.save()
+    #         print(post)
+    #         return redirect('app:new_poll')
+    # else:
+    #     form=QuestionForm()
+    # return render(request,'app/newQuestion.html',{
+    #     'form':form
+    # })
+    form_class = QuestionForm
+    form = form_class()
+    choice_forms = ChoiceInlineFormSet(
+        queryset=Choice.objects.none()
+    )
     if request.method == "POST":
-        print("inside if inside addnewquestion")
-        form = QuestionForm(request.POST)
-        print(form)
-        if form.is_valid():
-            print(form.is_valid())
-            post = form.save()
-            post.pub_date = timezone.now()
-            post.save()
-            print(post)
-            return redirect('app:new_poll')
-    else:
-        form=QuestionForm()
-    return render(request,'app/newQuestion.html',{
-        'form':form
+        print('request.method working')
+        form = form_class(request.POST)
+        choice_forms = ChoiceInlineFormSet(
+            request.POST,
+            queryset = Choice.objects.none()
+        )
+        print(form.is_valid())
+        print(choice_forms.is_valid())
+        if form.is_valid() and choice_forms.is_valid():
+            print('Forms are valid')
+            question = form.save(commit=False)
+            question.save()
+            choices = choice_forms.save(commit=False)
+            for choice in choices:
+                choice.question = question
+                choice.save()
+            messages.success(request, 'Added question')
+            return HttpResponseRedirect('app:new_poll')
+            
+
+    return render(request, 'app/newQuestion.html',{
+        'form':form,
+        'formset':choice_forms
     })
 
 @python_2_unicode_compatible
@@ -106,4 +140,23 @@ def my_polls(request):
     logged_in_user_polls = Question.objects.filter(user=user)
     return render(request,'app/my_polls.html',{
         'polls':logged_in_user_polls
+    })
+
+def register(request):
+    if request.method == "POST":
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(
+                user_form.cleaned_data['password']
+            )
+            new_user.save()
+            return render(request,'registration/register_done.html',{
+                'new_user':new_user
+            })
+    else:
+        user_form = UserRegistrationForm()
+
+    return render(request, 'registration/register.html',{
+        'user_form':user_form
     })
