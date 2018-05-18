@@ -31,7 +31,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -39,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     #'accounts',
-    'social_django'
+    'social_django',
+    # fix: django logout redirects me to administration page
+    # https://stackoverflow.com/a/34214067/4883946
+    'django.contrib.admin',
+    
 ]
 
 MIDDLEWARE = [
