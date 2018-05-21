@@ -38,7 +38,7 @@
                         
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{user.name}}
+                            {{user}}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item btn btn-success" href="{% url 'logout' %}?next={{request.url}}">Sign Out</a>
@@ -52,9 +52,9 @@
                             <a class = "nav-link disabled" href="{% url 'register' %}">Register</a>
                         </li>
                         <li class = "nav-item">
-                        <a href="{% url 'social:begin' 'github' %}" class = "btn btn-block btn-social btn-github">
-                            <span class = "fa fa-github"></span>Login with GitHub
-                        </a>
+                            <a href="{% url 'social:begin' 'twitter' %}" class = "btn btn-block btn-twitter">
+                                Sign in with Twitter
+                            </a>
                         </li>
                     {% endif %}
                     </ul>
