@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'app',
     #'accounts',
     'social_django',
+    'django_social_share',
     # fix: django logout redirects me to administration page
     # https://stackoverflow.com/a/34214067/4883946
     'django.contrib.admin',
