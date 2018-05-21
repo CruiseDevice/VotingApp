@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'app',
     #'accounts',
     'social_django',
+    'django_social_share',
     # fix: django logout redirects me to administration page
     # https://stackoverflow.com/a/34214067/4883946
     'django.contrib.admin',
@@ -142,5 +143,8 @@ LOGIN_REDIRECT_URL = '/'
 # GITHUB AUTHENTICATION
 SOCIAL_AUTH_GITHUB_KEY = credentials.SOCIAL_AUTH_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = credentials.SOCIAL_AUTH_GITHUB_SECRET
+
+SOCIAL_AUTH_TWITTER_KEY = credentials.SOCIAL_AUTH_TWITTER_KEY
+SOCIAL_AUTH_TWITTER_SECRET = credentials.SOCIAL_AUTH_TWITTER_SECRET
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

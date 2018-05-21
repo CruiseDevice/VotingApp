@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load social_share %}
 {% block title %}
 
 {% endblock %}
@@ -46,7 +47,9 @@
                 </script>
             
         </div>
-        
+        <br>
+        <div  class = "btn btn-block btn-twitter">
+            {% post_to_twitter "{{question.question_text}} | fcc voting" object_or_url%}
+        </div>
     </div>
-    
 {% endblock %}
