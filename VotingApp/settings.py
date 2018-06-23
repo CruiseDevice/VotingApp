@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #'accounts',
     'social_django',
     'django_social_share',
+    'crispy_forms',
     # fix: django logout redirects me to administration page
     # https://stackoverflow.com/a/34214067/4883946
     'django.contrib.admin',
@@ -81,6 +82,7 @@ TEMPLATES = [
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'app.authentication.EmailAuthBackend',
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
 )
@@ -148,3 +150,7 @@ SOCIAL_AUTH_TWITTER_KEY = credentials.SOCIAL_AUTH_TWITTER_KEY
 SOCIAL_AUTH_TWITTER_SECRET = credentials.SOCIAL_AUTH_TWITTER_SECRET
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# AUTHENTICATION_BACKENDS = (
+
+# )
