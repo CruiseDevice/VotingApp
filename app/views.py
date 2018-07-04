@@ -1,24 +1,34 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse_lazy
+from django.http import (
+     Http404, HttpResponseRedirect, HttpResponse
+)
 from django.utils.encoding import python_2_unicode_compatible
-from django.shortcuts import render,get_list_or_404, \
-                        get_object_or_404, redirect
+from django.shortcuts import (
+    render,get_list_or_404,get_object_or_404, redirect
+)
+from django.forms import (
+    modelformset_factory,
+)
+from django.db import transaction
 from django.urls import reverse
 from django.utils import  timezone
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView
 
 from .forms import (
-    ChoiceForm, QuestionForm, ChoiceInlineFormSet,
-    UserRegistrationForm
+    ChoiceForm, QuestionForm,
+    UserRegistrationForm, ChoiceFormSet
 )
 
 from .models import Question, Choice
 
 @python_2_unicode_compatible
 def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.all().order_by('-pub_date')
     # print(latest_question_list)
     return render(request,'app/list.html',{'latest_question_list':latest_question_list})
 
@@ -61,55 +71,56 @@ def results(request,question_id):
 def new_poll(request):
     return render(request,'app/new_poll.html',{})
 
-@python_2_unicode_compatible
-def addNewQuestion(request):
-    # print("addnewquestion")
-    # if request.method == "POST":
-    #     print("inside if inside addnewquestion")
-    #     form = QuestionForm(request.POST)
-    #     print(form)
-    #     if form.is_valid():
-    #         print(form.is_valid())
-    #         post = form.save()
-    #         post.pub_date = timezone.now()
-    #         post.save()
-    #         print(post)
-    #         return redirect('app:new_poll')
-    # else:
-    #     form=QuestionForm()
-    # return render(request,'app/newQuestion.html',{
-    #     'form':form
-    # })
-    form_class = QuestionForm
-    form = form_class()
-    choice_forms = ChoiceInlineFormSet(
-        queryset=Choice.objects.none()
-    )
-    if request.method == "POST":
-        print('request.method working')
-        form = form_class(request.POST)
-        choice_forms = ChoiceInlineFormSet(
-            request.POST,
-            queryset = Choice.objects.none()
-        )
-        print(form.is_valid())
-        print(choice_forms.is_valid())
-        if form.is_valid() and choice_forms.is_valid():
-            print('Forms are valid')
-            question = form.save(commit=False)
-            question.save()
-            choices = choice_forms.save(commit=False)
-            for choice in choices:
-                choice.question = question
-                choice.save()
-            messages.success(request, 'Added question')
-            return HttpResponseRedirect('app:new_poll')
+# @login_required
+# @python_2_unicode_compatible
+# def addNewQuestion(request):
+#     questionForm = QuestionForm(request.POST or None)
+#     choiceFormSet = modelformset_factory(Choice, form=ChoiceForm, extra=4)
+#     # queryset = Question.objects.get()
+#     formset = choiceFormSet(request.POST or None, queryset=None)
+#     if questionForm.is_valid() and formset.is_valid():
+#         instances = formset.save(commit=False)
+#         for instance in instances:
             
+#             instance.save()
+#     return render(request, 'app/newQuestion.html',{
+#         'questionForm':questionForm,
+#         'formset':formset,
+#     })
+    # https://stackoverflow.com/questions/9743103/django-how-to-limit-field-choices-in-formset
+    # formset for choices django
+    # https://stackoverflow.com/questions/9012033/django-modelform-has-no-model-class-specified
+    # https://stackoverflow.com/questions/25602279/formset-object-object-has-no-attribute-fields
+    # https://whoisnicoleharris.com/2015/01/06/implementing-django-formsets.html
+    # ChoiceFormSet = formset_factory(ChoiceForm, formset=BaseFormSet)
 
-    return render(request, 'app/newQuestion.html',{
-        'form':form,
-        'formset':choice_forms
-    })
+    
+class AddNewQuestion(CreateView):
+    model = Question
+    template_name = 'app/newQuestion.html'
+    fields = ['question_text']
+    success_url = reverse_lazy('app:index')
+
+    def get_context_data(self, **kwargs):
+        data = super(AddNewQuestion, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['choiceset'] = ChoiceFormSet(self.request.POST)
+        else:
+            data['choiceset'] = ChoiceFormSet()
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        choiceset = context['choiceset']
+        with transaction.atomic():
+            self.object = form.save()
+
+            if choiceset.is_valid():
+                choiceset.instance = self.object
+                choice.save()
+        return super(AddNewQuestion, self).form_valid(form)
+
+
 
 @python_2_unicode_compatible
 def addNewChoice(request):
@@ -124,6 +135,7 @@ def addNewChoice(request):
     return render(request,'app/newChoice.html',{
         'form':form
     })
+
 
 def github_redirect(request):
     return redirect("https://github.com/CruiseDevice")

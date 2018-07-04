@@ -31,10 +31,14 @@ urlpatterns = [
         views.new_poll,
         name='new_poll'
     ),
+    # url(
+    #     r'^new/addNewQuestion',
+    #     views.addNewQuestion,
+    #     name='addNewQuestion'
+    # ),
     url(
         r'^new/addNewQuestion',
-        views.addNewQuestion,
-        name='addNewQuestion'
+        views.AddNewQuestion.as_view(),name='addNewQuestion'
     ),
     url(
         r'^new/addNewChoice',
