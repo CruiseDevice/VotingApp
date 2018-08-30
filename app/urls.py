@@ -26,24 +26,19 @@ urlpatterns = [
         views.results,
         name='results'
     ),
-    url(
-        r'^new/$',
-        views.new_poll,
-        name='new_poll'
-    ),
     # url(
     #     r'^new/addNewQuestion',
     #     views.addNewQuestion,
     #     name='addNewQuestion'
     # ),
     url(
-        r'^new/addNewQuestion',
-        views.AddNewQuestion.as_view(),name='addNewQuestion'
+        r'^new/add-new-question-choice',
+        views.AddNewQuestionChoice.as_view(),name='add_new_question_choice'
     ),
     url(
-        r'^new/addNewChoice',
-        views.addNewChoice,
-        name='addNewChoice',
+        r'^update-question/(?P<pk>[0-9]+)/$',
+        views.UpdateQuestionChoice.as_view(),
+        name='update_question'
     ),
     url(
         r'^github_redirect',

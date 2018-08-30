@@ -7,14 +7,17 @@ from django.forms import inlineformset_factory
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ('question_text',)
+        # fields = ('question_text',)
+        exclude = ()
 
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
-        fields = ('choice_text',)
+        # fields = ('choice_text',)
+        exclude = ()
 
-ChoiceFormSet = inlineformset_factory(Question, Choice, form=ChoiceForm, extra=4)
+ChoiceFormSet = inlineformset_factory(Question, Choice, form=ChoiceForm, 
+                    extra=4)
 
 
 class UserRegistrationForm(forms.ModelForm):
