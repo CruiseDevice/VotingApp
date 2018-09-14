@@ -33,11 +33,11 @@ urlpatterns = [
     # ),
     url(
         r'^new/add-new-question-choice',
-        views.AddNewQuestionChoice.as_view(),name='add_new_question_choice'
+        views.QuestionChoiceCreate.as_view(),name='add_new_question_choice'
     ),
     url(
         r'^update-question/(?P<pk>[0-9]+)/$',
-        views.UpdateQuestionChoice.as_view(),
+        views.QuestionChoiceUpdate.as_view(),
         name='update_question'
     ),
     url(
