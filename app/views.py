@@ -73,32 +73,32 @@ def results(request,question_id):
 class QuestionCreate(CreateView):
     model = Question
     fields = ['question_text']
-    template_name='app/newQuestion.html'
+    # template_name='app/newQuestion.html'
 
-class AddNewQuestionChoice(CreateView):
+class QuestionChoiceCreate(CreateView):
     model = Question
-    template_name = 'app/newQuestion.html'
     fields = ['question_text']
+    # template_name = 'app/newQuestion.html'
     success_url = reverse_lazy('app:index')
 
     def get_context_data(self, **kwargs):
-        data = super(AddNewQuestionChoice, self).get_context_data(**kwargs)
+        data = super(QuestionChoiceCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['choiceset'] = ChoiceFormSet(self.request.POST)
+            data['choices'] = ChoiceFormSet(self.request.POST)
         else:
-            data['choiceset'] = ChoiceFormSet()
+            data['choices'] = ChoiceFormSet()
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
-        choiceset = context['choiceset']
+        choices = context['choices']
         with transaction.atomic():
             self.object = form.save()
 
-            if choiceset.is_valid():
-                choiceset.instance = self.object
-                choiceset.save()
-        return super(AddNewQuestionChoice, self).form_valid(form)
+            if choices.is_valid():
+                choices.instance = self.object
+                choices.save()
+        return super(QuestionChoiceCreate, self).form_valid(form)
 
 
 class QuestionUpdate(UpdateView):
@@ -106,31 +106,31 @@ class QuestionUpdate(UpdateView):
      success_url = '/'
      fields = ['question_text']
 
-class UpdateQuestionChoice(UpdateView):
+class QuestionChoiceUpdate(UpdateView):
     model = Question
     fields = ['question_text']
-    template_name='app/newQuestion.html'
+    # template_name='app/newQuestion.html'
     success_url = reverse_lazy('app:index')
 
     def get_context_data(self, **kwargs):
-        data = super(UpdateQuestionChoice, self).get_context_data(**kwargs)
+        data = super(QuestionChoiceUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['choiceset'] = ChoiceFormSet(self.request.POST, 
+            data['choices'] = ChoiceFormSet(self.request.POST, 
                                                 instance=self.object)
         else:
-            data['choiceset'] = ChoiceFormSet(instance=self.object)
+            data['choices'] = ChoiceFormSet(instance=self.object)
         return data
 
     def form_valid(self,form):
         context = self.get_context_data()
-        choiceset = context['choiceset']
+        choices = context['choices']
         with transaction.atomic():
             self.object = form.save()
 
-            if choiceset.is_valid():
-                choiceset.instance = self.object
+            if choices.is_valid():
+                choices.instance = self.object
                 choiceset.save()
-        return super(UpdateQuestionChoice, self).form_valid(form)
+        return super(QuestionChoiceUpdate, self).form_valid(form)
 
 def github_redirect(request):
     return redirect("https://github.com/CruiseDevice")
