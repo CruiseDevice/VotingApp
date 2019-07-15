@@ -9,7 +9,7 @@ Here are the specific user stories you should implement for this project:
 
 - [x] User Story: As an authenticated user, I can keep my polls and come back later to access them.
 
-- [] User Story: As an authenticated user, I can share my polls with my friends.
+- [ ] User Story: As an authenticated user, I can share my polls with my friends.
 
 - [ ] User Story: As an authenticated user, I can see the aggregate results of my polls.
 
