@@ -42,7 +42,6 @@ def index(request):
 def detail(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
-        print(question)
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request, 'app/detail.html', {
@@ -92,12 +91,15 @@ def fcc_redirect(request):
             "https://www.freecodecamp.org/challenges/build-a-voting-app")
 
 
+def share_twitter(request):
+    return redirect("https://twitter.com")
+
+
 @login_required
 def my_polls(request):
     user = None
     logged_in_user = request.user
     logged_in_user_polls = Question.objects.filter(user=logged_in_user)
-    print(logged_in_user_polls)
     return render(request, 'app/my_polls.html', {
         'polls': logged_in_user_polls
     })
@@ -124,6 +126,7 @@ def register(request):
 
 
 def create_poll(request):
+    user = request.user
     if request.method == "GET":
         questionform = QuestionModelForm(request.GET or None)
         formset = ChoiceFormset(queryset=Choice.objects.none())
@@ -131,7 +134,9 @@ def create_poll(request):
         questionform = QuestionModelForm(request.POST)
         formset = ChoiceFormset(request.POST)
         if questionform.is_valid() and formset.is_valid():
-            question = questionform.save()
+            question = questionform.save(commit=False)
+            question.user = user
+            question.save()
             for form in formset:
                 choice = form.save(commit=False)
                 choice.question = question
@@ -141,3 +146,12 @@ def create_poll(request):
             'questionform': questionform,
             'formset': formset
     })
+
+
+def delete_poll(request, question_id):
+    if question_id:
+        question = get_object_or_404(Question, id=question_id)
+        if question:
+            question.choice_set.all().delete()
+            question.delete()
+    return redirect('app:index')
