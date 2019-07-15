@@ -11,7 +11,7 @@ Here are the specific user stories you should implement for this project:
 
 - [ ] User Story: As an authenticated user, I can share my polls with my friends.
 
-- [ ] User Story: As an authenticated user, I can see the aggregate results of my polls.
+- [x] User Story: As an authenticated user, I can see the aggregate results of my polls.
 
 - [x] User Story: As an authenticated user, I can delete polls that I decide I don't want anymore.
 
