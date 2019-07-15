@@ -3,12 +3,12 @@
 {% endblock %}
 {% block content %}
     <div>
-        <ul class = "list-group">
-            <li class = "list-group-item">
-                {% for poll in polls %}
-                    <a href="{% url 'app:detail' poll.id  %}">{{poll.question_text}} by {{poll.user}}</a>
-                {% endfor %}
-            </li>
-        </ul>
+        {% for poll in polls %}
+		    <ul class = "list-group">
+		        <li class = "list-group-item">
+		                <a href="{% url 'app:detail' poll.id  %}">{{poll.question_text}} by {{request.user}}</a>
+		        </li>
+		    </ul>
+        {% endfor %}
     </div>
 {% endblock %}

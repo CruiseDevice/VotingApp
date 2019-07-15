@@ -3,15 +3,20 @@
 {% endblock %}
 {% block content %}
     <h1>{{question.question_text}}</h1>
-    
+
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
     <form action="{% url 'app:vote' question.id %}" method="post">
         {% csrf_token %}
         {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+            <input type="radio" class="" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
         {% endfor %}
-    <input type="submit" value="Vote" />
-</form>
+        <input type="submit" class="btn btn-primary" value="Vote" />
+    </form>
+    <div class="row spacer">
+        {% if request.user == question.user %}
+            <a href="{% url "app:delete" question.id %}" class="btn btn-danger">Delete this Poll</a>
+        {% endif %}
+    </div>
 {% endblock %}

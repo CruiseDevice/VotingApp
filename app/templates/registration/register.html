@@ -1,10 +1,21 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
     <h1>Create an account</h1>
     <p>Please, sign up using the following form:</p>
-    <form action="" method="POST">
+    <form action="" method="POST" class = "uniForm">
         {% csrf_token %}
-        {{user_form.as_p}}
-        <p><input type="submit" value="Create my account"></p>
+            {% for field in user_form %}
+                <p>
+                        {{field | as_crispy_field}}
+                    {% if field.help_text %}
+                        <small style="color: grey">{{field.help_text}}</small>
+                    {% endif %}
+                    {% for error in user_form.errors %}
+                        <p style = "color:red">{{error | as_crispy_field}}</p>
+                    {% endfor %}
+                </p>
+            {% endfor %}
+            <p><input type="submit" value="Create my account"></p>
     </form>
 {% endblock %}
