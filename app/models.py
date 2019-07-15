@@ -18,14 +18,8 @@ CHOICE_ORDER_OPTIONS = (
 @python_2_unicode_compatible
 class Question(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
-    question_text = models.CharField(
-        max_length=200, default="",
-    )
-    pub_date = models.DateTimeField(
-        blank=True,
-        null=True,
-        auto_now_add=True
-    )
+    question_text = models.CharField(max_length=200, default="")
+    pub_date = models.DateTimeField(blank=True, null=True, auto_now_add=True)
 
     def publish(self):
         self.pub_date = timezone.now()

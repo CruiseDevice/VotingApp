@@ -6,7 +6,7 @@
         {% for poll in polls %}
 		    <ul class = "list-group">
 		        <li class = "list-group-item">
-		                <a href="{% url 'app:detail' poll.id  %}">{{poll.question_text}} by {{request.user}}</a>
+		                <a href="{% url 'app:detail' poll.id  %}">{{poll.question_text}}</a> by {{request.user}}
 		        </li>
 		    </ul>
         {% endfor %}
