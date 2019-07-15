@@ -31,7 +31,6 @@ from .models import Question, Choice
 @python_2_unicode_compatible
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')
-
     return render(request, 'app/question_list.html', {
         'latest_question_list': latest_question_list
     })
@@ -97,11 +96,10 @@ def share_twitter(request):
 
 @login_required
 def my_polls(request):
-    user = None
-    logged_in_user = request.user
-    logged_in_user_polls = Question.objects.filter(user=logged_in_user)
+    user = request.user
+    polls = Question.objects.filter(user=user)
     return render(request, 'app/my_polls.html', {
-        'polls': logged_in_user_polls
+        'polls': polls
     })
 
 
