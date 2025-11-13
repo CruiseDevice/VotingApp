@@ -1,11 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.http import (
      Http404, HttpResponseRedirect, HttpResponse
 )
-from django.utils.encoding import python_2_unicode_compatible
 from django.shortcuts import (
     render, get_list_or_404, get_object_or_404, redirect
 )
@@ -28,7 +24,6 @@ from .forms import (
 from .models import Question, Choice
 
 
-@python_2_unicode_compatible
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')
     return render(request, 'app/question_list.html', {
@@ -37,7 +32,6 @@ def index(request):
 
 
 @login_required
-@python_2_unicode_compatible
 def detail(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
@@ -49,7 +43,6 @@ def detail(request, question_id):
 
 
 @login_required
-@python_2_unicode_compatible
 def vote(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     try:
@@ -67,7 +60,6 @@ def vote(request, question_id):
 
 
 @login_required
-@python_2_unicode_compatible
 def results(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     colors = ['Yellow', 'Brown', 'Red', 'Green', 'Blue']

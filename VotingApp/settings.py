@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'social_django',
     'django_social_share',
     'crispy_forms',
+    'crispy_bootstrap4',
     # fix: django logout redirects me to administration page
     # https://stackoverflow.com/a/34214067/4883946
     'django.contrib.admin',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,10 @@ SOCIAL_AUTH_TWITTER_KEY = credentials.SOCIAL_AUTH_TWITTER_KEY
 SOCIAL_AUTH_TWITTER_SECRET = credentials.SOCIAL_AUTH_TWITTER_SECRET
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Crispy Forms settings
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
