@@ -1,12 +1,8 @@
-from __future__ import unicode_literals
-
 import datetime
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
-from django.contrib.auth.models import User
+from django.utils.translation import gettext as _
 
 CHOICE_ORDER_OPTIONS = (
     ('content', _('Content')),
@@ -15,9 +11,8 @@ CHOICE_ORDER_OPTIONS = (
 )
 
 
-@python_2_unicode_compatible
 class Question(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     question_text = models.CharField(max_length=200, default="")
     pub_date = models.DateTimeField(blank=True, null=True, auto_now_add=True)
 
